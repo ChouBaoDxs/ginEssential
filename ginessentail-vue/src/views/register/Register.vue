@@ -98,12 +98,22 @@ export default {
       return $dirty ? !$error : null
     },
     register() {
-      if (this.user.telephone.length !== 11) {
-        this.validation = false
+      // 防止用户什么都没操作直接点击，先设置一下
+      this.$v.user.$touch()
+      // 验证数据
+      if (this.$v.user.$anyError) {
         return
       }
-      this.validation = true
+      // 请求api
+      const api = 'http://127.0.0.1:8080/api/auth/register'
+      this.axios.post(api, { ...this.user }).then((res) => {
+        console.log(res.data)
+        // 保存token
 
+        // 跳转主页
+      }).catch((err) => {
+        console.log('err:', err.response.data.msg)
+      })
       console.log('register')
     },
   },

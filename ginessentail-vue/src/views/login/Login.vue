@@ -93,7 +93,7 @@ export default {
       }
       this.validation = true
 
-      console.log('register')
+      console.log('login')
     },
   },
 }
