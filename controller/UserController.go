@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"ginEssential/common"
 	"ginEssential/dto"
 	"ginEssential/model"
@@ -15,10 +16,28 @@ import (
 
 func Register(ctx *gin.Context) {
 	DB := common.GetDB()
+	// 1. 使用map获取application/json请求的参数
+	// var requestMap = make(map[string]string)
+	// json.NewDecoder(ctx.Request.Body).Decode(&requestMap)
+	// fmt.Printf("requestMap：%v", requestMap)
+
+	// 2. 使用结构体获取application/json请求的参数
+	// var requestUser = model.User{}
+	// json.NewDecoder(ctx.Request.Body).Decode(&requestUser)
+	// fmt.Printf("requestUser：%v", requestUser)
+
+	// 3. gin自带的bind获取application/json请求的参数
+	var ginBindUser = model.User{}
+	ctx.Bind(&ginBindUser)
+	fmt.Printf("ginBindUser：%v", ginBindUser)
+
 	// 获取参数
-	name := ctx.PostForm("name")
-	telephone := ctx.PostForm("telephone")
-	password := ctx.PostForm("password")
+	name := ginBindUser.Name
+	telephone := ginBindUser.Telephone
+	password := ginBindUser.Password
+	// name := ctx.PostForm("name")
+	// telephone := ctx.PostForm("telephone")
+	// password := ctx.PostForm("password")
 
 	// 数据验证
 	if len(telephone) != 11 {
