@@ -82,11 +82,15 @@ func Register(ctx *gin.Context) {
 
 	DB.Create(&newUser)
 
-	// ctx.JSON(200, gin.H{
-	// 	"code":    200,
-	// 	"message": "注册成功",
-	// })
-	response.Success(ctx, nil, "注册成功")
+	// 发放token
+	token, err := common.ReleaseToken(newUser)
+	if err != nil {
+		response.Response(ctx, http.StatusInternalServerError, 500, nil, "系统异常")
+		log.Printf("token generate error : %v", err)
+		return
+	}
+
+	response.Success(ctx, gin.H{"token": token}, "注册成功")
 }
 
 func Login(ctx *gin.Context) {

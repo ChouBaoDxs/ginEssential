@@ -107,12 +107,19 @@ export default {
       // 请求api
       const api = 'http://127.0.0.1:8080/api/auth/register'
       this.axios.post(api, { ...this.user }).then((res) => {
-        console.log(res.data)
+        const { data } = res.data
+        console.log(data)
         // 保存token
+        localStorage.setItem('token', data.token)
 
         // 跳转主页
       }).catch((err) => {
         console.log('err:', err.response.data.msg)
+        this.$bvToast.toast(err.response.data.msg, {
+          title: '出错啦',
+          variant: 'danger',
+          solid: true,
+        })
       })
       console.log('register')
     },
